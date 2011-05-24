@@ -1,5 +1,4 @@
-
-function handleFileSelect(e) {
+$('#file-upload').change(function(e) {
   var file = e.target.files[0]; 
   // no file no pixels
   if (!file) return;
@@ -38,7 +37,7 @@ function handleFileSelect(e) {
       $pixels = $('#pixels');
       $pixels.css('width', canvas.width*5-1);
       $pixels.css('height', canvas.height*5);
-      for(var i=0; i<colors.length; i++) {
+      for (var i=0; i<colors.length; i++) {
         $pixels.append('<div class="pixel" style="background-color:'+colors[i]+';" data-color="'+ colors[i] + '" ></div>');
       }
       $('.pixel').hover(function() {
@@ -52,12 +51,8 @@ function handleFileSelect(e) {
       });
     };
   })(file);
-
-  // Read in the image file as a data URL.
   reader.readAsDataURL(file);
-}
-
-document.getElementById('files').addEventListener('change', handleFileSelect, false);
+});
 
 function pixelate(canvas, ctx) {
   var shift = Array.prototype.shift
