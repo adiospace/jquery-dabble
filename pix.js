@@ -39,15 +39,15 @@ function handleFileSelect(evt) {
 
         colors = pixelate(canvas, context);
 
-        $middle = $('#pixel-area .middle');
-        $middle.css('width', canvas.width*5-1);
-        $middle.css('height', canvas.height*5);
+        $pixels = $('#pixels');
+        $pixels.css('width', canvas.width*5-1);
+        $pixels.css('height', canvas.height*5);
         for(var i=0; i<colors.length; i++) {
-          $middle.append('<div class="pixel" style="background-color:'+colors[i]+';" data-color="'+ colors[i] + '" ></div>');
+          $pixels.append('<div class="pixel" style="background-color:'+colors[i]+';" data-color="'+ colors[i] + '" ></div>');
         }
         $('.pixel').hover(function() {
           $(this).css("-webkit-transition","none");
-          $(this).css("background-color","grey");
+          $(this).css("background-color","#888");
         },
         function() {
           var color = $(this).data('color');
