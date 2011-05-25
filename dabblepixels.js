@@ -11,15 +11,16 @@ $('#file-upload').change(function(e) {
   reader.onload = (function(f) {
     return function(e) {
       var img = document.createElement('img')
-        , c = document.getElementById('c')
+        , c = document.createElement('canvas')
         , ctx = c.getContext('2d')
         , cell = {width: 10, height: 10}
+        , scale = 2
         , lim = 400
-        , ratio
         , cols, rows
         , width, height
+        , ratio
         , colors
-        , scale = 5;
+        , html = [];
 
         img.src = e.target.result;
         width = img.width;
@@ -48,14 +49,21 @@ $('#file-upload').change(function(e) {
       colors = pixelate(c, ctx, rows, cols, cell);
 
       for (var i=0; i<colors.length; i++) {
-        $pixels.append('<div class="pixel" style="background-color:'+colors[i]+';" data-color="'+ colors[i] + '" ></div>');
+        html.push(''
+          + '<div class="pixel"'
+          + 'style="background-color:"' + colors[i]
+          +'" data-color="'+ colors[i] 
+          + '"></div>');
       }
+
+      $pixels.html(html.join(''));
+      $('#pixels .pixel').css('width', cell.width*scale);
+      $('#pixels .pixel').css('height', cell.height*scale);
 
       $('.pixel').hover(function() {
         $(this).css('-webkit-transition','none');
         $(this).css('background-color','#888');
-      },
-      function() {
+      }, function() {
         var color = $(this).data('color');
         $(this).css('-webkit-transition','background-color 5s ease-out');
         $(this).css('background-color', color);
