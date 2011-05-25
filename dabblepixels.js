@@ -14,7 +14,7 @@ $('#file-upload').change(function(e) {
         , c = document.createElement('canvas')
         , ctx = c.getContext('2d')
         , cell = {width: 10, height: 10}
-        , scale = 2
+        , scale = 1
         , lim = 400
         , cols, rows
         , width, height
@@ -49,14 +49,11 @@ $('#file-upload').change(function(e) {
       colors = pixelate(c, ctx, rows, cols, cell);
 
       for (var i=0; i<colors.length; i++) {
-        html.push(''
-          + '<div class="pixel"'
-          + 'style="background-color:"' + colors[i]
-          +'" data-color="'+ colors[i] 
-          + '"></div>');
+        html.push('<div class="pixel" style="background-color:' + colors[i] 
+          + ';" data-color="' + colors[i] + '"></div>');
       }
-
       $pixels.html(html.join(''));
+
       $('#pixels .pixel').css('width', cell.width*scale);
       $('#pixels .pixel').css('height', cell.height*scale);
 
