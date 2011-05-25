@@ -10,42 +10,47 @@ $('#file-upload').change(function(e) {
     // Closure to capture the file information.
   reader.onload = (function(f) {
     return function(e) {
-      var img = document.createElement('img');
-      img.src= e.target.result;
+      var img = document.createElement('img')
+        , c = document.getElementById('c')
+        , ctx = c.getContext('2d')
+        , cell = {width: 10, height: 10}
+        , lim = 400
+        , ratio
+        , cols, rows
+        , width, height
+        , colors
+        , scale = 5;
 
-      var width = img.width;
-      var height = img.height;
-
-      var canvas = document.getElementById('c');
-      var context = canvas.getContext('2d');
+        img.src = e.target.result;
+        width = img.width;
+        height = img.height;
 
       if (width>=height) {
-        var ratio = width/400;
-        img.width = 400;
+        ratio = width/lim;
+        img.width = lim;
         img.height = height/ratio;
       } else {
-        var ratio = height/400;
+        ratio = height/lim;
         img.width = width/ratio;
-        img.height = 400;
+        img.height = lim;
       }
-      canvas.width = img.width;
-      canvas.height = img.height;
-      context.drawImage(img, 0, 0, img.width, img.height);
+      c.width = img.width;
+      c.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
 
-
-      var cell = {width: 10, height: 10}
-        , cols = Math.round(canvas.width/cell.width)
-        , rows = Math.round(canvas.height/cell.height);
+      cols = Math.round(c.width/cell.width);
+      rows = Math.round(c.height/cell.height);
 
       $pixels = $('#pixels');
-      $pixels.css('width', cols * 50 + 1);
-      $pixels.css('height', rows * 50 +1 );
+      $pixels.css('width', cols*cell.height*scale + 1);
+      $pixels.css('height', rows*cell.width*scale + 1);
 
-      colors = pixelate(canvas, context, rows, cols, cell);
+      colors = pixelate(c, ctx, rows, cols, cell);
 
       for (var i=0; i<colors.length; i++) {
         $pixels.append('<div class="pixel" style="background-color:'+colors[i]+';" data-color="'+ colors[i] + '" ></div>');
       }
+
       $('.pixel').hover(function() {
         $(this).css('-webkit-transition','none');
         $(this).css('background-color','#888');
@@ -81,4 +86,3 @@ function pixelate(canvas, ctx, rows, cols, cell) {
   }
  return colors; 
 }
-

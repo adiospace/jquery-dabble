@@ -1,19 +1,15 @@
 #pixels{
-    width: 1000px;
-    margin: 0 auto;
-
+  margin: 0 auto;
 }
-
 #pixels .pixel {
-    width: 50px;
-    height: 50px;
-    display: block;
-    float: left;
-    -webkit-box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
-    -webkit-transition: background-color 5s ease;
+  width: 50px;
+  height: 50px;
+  display: block;
+  float: left;
+  -webkit-box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+  -webkit-transition: background-color 5s ease;
 }
-
 
 #pixels .pixel:hover {
-opacity: 0.6;
+  opacity: 0.6;
 }
