@@ -32,11 +32,17 @@ $('#file-upload').change(function(e) {
       canvas.height = img.height;
       context.drawImage(img, 0, 0, img.width, img.height);
 
-      colors = pixelate(canvas, context);
+
+      var cell = {width: 10, height: 10}
+        , cols = Math.round(canvas.width/cell.width)
+        , rows = Math.round(canvas.height/cell.height);
 
       $pixels = $('#pixels');
-      $pixels.css('width', canvas.width*5-1);
-      $pixels.css('height', canvas.height*5);
+      $pixels.css('width', cols * 50 + 1);
+      $pixels.css('height', rows * 50 +1 );
+
+      colors = pixelate(canvas, context, rows, cols, cell);
+
       for (var i=0; i<colors.length; i++) {
         $pixels.append('<div class="pixel" style="background-color:'+colors[i]+';" data-color="'+ colors[i] + '" ></div>');
       }
@@ -54,18 +60,15 @@ $('#file-upload').change(function(e) {
   reader.readAsDataURL(file);
 });
 
-function pixelate(canvas, ctx) {
+function pixelate(canvas, ctx, rows, cols, cell) {
   var shift = Array.prototype.shift
-    , cell = {width: 10, height: 10}
-    , cols = canvas.width/cell.width
-    , rows = canvas.height/cell.height
     , rgba, red, green, blue, alpha
     , colors = []
     , row, col
     , x, y;
 
-  for(row=1; row<rows; row++) {
-    for(col=1; col<cols; col++) {
+  for(row=0; row<rows; row++) {
+    for(col=0; col<cols; col++) {
       x = col * cell.width;
       y = row * cell.height;
       rgba = ctx.getImageData(x, y, 1, 1).data;
