@@ -14,7 +14,7 @@ $('#file-upload').change(function(e) {
         , c = document.createElement('canvas')
         , ctx = c.getContext('2d')
         , cell = {width: 10, height: 10}
-        , scale = 1
+        , scale = 3.5 
         , lim = 400
         , cols, rows
         , width, height
@@ -22,51 +22,58 @@ $('#file-upload').change(function(e) {
         , colors
         , html = [];
 
-        img.src = e.target.result;
+      img.onload = function(){
         width = img.width;
         height = img.height;
 
-      if (width>=height) {
-        ratio = width/lim;
-        img.width = lim;
-        img.height = height/ratio;
-      } else {
-        ratio = height/lim;
-        img.width = width/ratio;
-        img.height = lim;
-      }
-      c.width = img.width;
-      c.height = img.height;
-      ctx.drawImage(img, 0, 0, img.width, img.height);
+        if (width>=height) {
+          ratio = width/lim;
+          img.width = lim;
+          img.height = height/ratio;
+        } else {
+          ratio = height/lim;
+          img.width = width/ratio;
+          img.height = lim;
+        }
+        c.width = img.width;
+        c.height = img.height;
+        ctx.drawImage(img, 0, 0, img.width, img.height);
 
-      cols = Math.round(c.width/cell.width);
-      rows = Math.round(c.height/cell.height);
+        console.log(cols, rows);
+        cols = Math.round(c.width/cell.width);
+        rows = Math.round(c.height/cell.height);
 
-      $pixels = $('#pixels');
-      $pixels.css('width', cols*cell.height*scale + 1);
-      $pixels.css('height', rows*cell.width*scale + 1);
+        $pixels = $('#pixels');
+        $pixels.css('width', cols*cell.height*scale + 1);
+        $pixels.css('height', rows*cell.width*scale + 1);
 
-      colors = pixelate(c, ctx, rows, cols, cell);
+        colors = pixelate(c, ctx, rows, cols, cell);
 
-      for (var i=0; i<colors.length; i++) {
-        html.push('<div class="pixel" style="background-color:' + colors[i] 
-          + ';" data-color="' + colors[i] + '"></div>');
-      }
-      $pixels.html(html.join(''));
+        for (var i=0; i<colors.length; i++) {
+          html.push('<div class="pixel" style="background-color:' + colors[i] 
+            + ';" data-color="' + colors[i] + '"></div>');
+        }
+        $pixels.html(html.join(''));
 
-      $('#pixels .pixel').css('width', cell.width*scale);
-      $('#pixels .pixel').css('height', cell.height*scale);
+        $('#pixels .pixel').css('width', cell.width*scale);
+        $('#pixels .pixel').css('height', cell.height*scale);
 
-      $('.pixel').hover(function() {
-        $(this).css('-webkit-transition','none');
-        $(this).css('background-color','#888');
-      }, function() {
-        var color = $(this).data('color');
-        $(this).css('-webkit-transition','background-color 5s ease-out');
-        $(this).css('background-color', color);
-      });
+        $('.pixel').hover(function() {
+          $(this).css('-webkit-transition','none');
+          $(this).css('background-color','#888');
+        }, function() {
+          var color = $(this).data('color');
+          $(this).css('-webkit-transition','background-color 5s ease-out');
+          $(this).css('background-color', color);
+        });
+      };
+      img.src = e.target.result;
     };
   })(file);
+
+  reader.onerror = function(e) {
+    console.log(e);
+  };
   reader.readAsDataURL(file);
 });
 
