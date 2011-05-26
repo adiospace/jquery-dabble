@@ -12,7 +12,14 @@
       display: block;
       float: left;
       -webkit-box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
-      -webkit-transition: background-color 1s ease;
+      -webkit-box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+      -moz-box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+      box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+
+      -webkit-transition: background-color 5s ease;
+      -moz-transition: background-color 5s ease;
+      -o-transition: background-color 5s ease;
+      transition: background-color 5s ease;
     }
     #pixels .pixel:hover {
       opacity: 0.6;
@@ -35,13 +42,21 @@
       $('#result').html(html);
       $('#pixels .pixel').hover(function() {
         $(this).css('-webkit-transition','none');
+        $(this).css("-moz-transition","none");
+        $(this).css("-o-transition","none");
+        $(this).css("transition","none");   
         $(this).css('background-color','#888');
       }, function() {
         var color = $(this).data('color');
-        $(this).css('-webkit-transition','background-color 5s ease-out');
+        $(this).css("-webkit-transition","background-color 5s ease-out");
+        $(this).css("-moz-transition","background-color 5s ease-out");
+        $(this).css("-o-transition","background-color 5s ease-out");
+        $(this).css("transition","background-color 5s ease-out");   
         $(this).css('background-color', color);
       });
     }
+
+});
   </script>
 </body>
 </html>
