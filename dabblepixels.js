@@ -14,7 +14,7 @@ $('#file-upload').change(function(e) {
         , c = document.createElement('canvas')
         , ctx = c.getContext('2d')
         , cell = {width: 10, height: 10}
-        , scale = 3.5 
+        , scale = 4 
         , lim = 400
         , cols, rows
         , width, height
@@ -44,8 +44,8 @@ $('#file-upload').change(function(e) {
         rows = Math.round(c.height/cell.height);
 
         $pixels = $('#pixels');
-        $pixels.css('width', cols*cell.height*scale + 1);
-        $pixels.css('height', rows*cell.width*scale + 1);
+        $pixels.css('width', cols*cell.width*scale + 1);
+        $pixels.css('height', rows*cell.height*scale + 1);
 
         colors = pixelate(c, ctx, rows, cols, cell);
 
