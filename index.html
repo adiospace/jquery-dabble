@@ -4,13 +4,45 @@
   <meta charset="utf-8">
   <title>Dabble Pixels</title>
   <link href="style.css" type="text/css" rel="stylesheet">
+  <style>
+    #pixels{
+      margin: 0 auto;
+    }
+    #pixels .pixel {
+      display: block;
+      float: left;
+      -webkit-box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+      -webkit-transition: background-color 1s ease;
+    }
+    #pixels .pixel:hover {
+      opacity: 0.6;
+    }
+  </style>
 </head>
 <body>
   <input type="file" id="file-upload"/>
   <output id="list"></output>
   <div id="result"></div>
+  <script src="dabbleback.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-  <script src="dabblepixels.js"></script>
+  <script>
+    $('#file-upload').change(function(e) {
+      var file = e.target.files[0]; 
+      dabbleback(file, render);
+    });
+
+    function render(html) {
+      $('#result').html(html);
+      $('#pixels .pixel').hover(function() {
+        $(this).css('-webkit-transition','none');
+        $(this).css('background-color','#888');
+      }, function() {
+        var color = $(this).data('color');
+        $(this).css('-webkit-transition','background-color 5s ease-out');
+        $(this).css('background-color', color);
+      });
+    }
+  </script>
 </body>
 </html>
 
