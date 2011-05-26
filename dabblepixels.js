@@ -1,83 +1,64 @@
-$('#file-upload').change(function(e) {
-  var file = e.target.files[0]; 
+var c = document.createElement('canvas')
+  , ctx = c.getContext('2d')
+  , cell = {width: 10, height: 10}
+  , scale = 4;
+
+function readFile(file, fn) {
   // no file no pixels
   if (!file) return;
   // only process image files.
   if (!file.type.match('image.*')) return;
 
-  var reader = new FileReader();
+  var reader = new FileReader()
+  , img = document.createElement('img')
+  , html;
 
-    // Closure to capture the file information.
-  reader.onload = (function(f) {
-    return function(e) {
-      var img = document.createElement('img')
-        , c = document.createElement('canvas')
-        , ctx = c.getContext('2d')
-        , cell = {width: 10, height: 10}
-        , scale = 4 
-        , lim = 400
-        , cols, rows
-        , width, height
-        , ratio
-        , colors
-        , html = [];
-
-      img.onload = function(){
-        width = img.width;
-        height = img.height;
-
-        if (width>=height) {
-          ratio = width/lim;
-          img.width = lim;
-          img.height = height/ratio;
-        } else {
-          ratio = height/lim;
-          img.width = width/ratio;
-          img.height = lim;
-        }
-        c.width = img.width;
-        c.height = img.height;
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-
-        console.log(cols, rows);
-        cols = Math.round(c.width/cell.width);
-        rows = Math.round(c.height/cell.height);
-
-        $pixels = $('#pixels');
-        $pixels.css('width', cols*cell.width*scale + 1);
-        $pixels.css('height', rows*cell.height*scale + 1);
-
-        colors = pixelate(c, ctx, rows, cols, cell);
-
-        for (var i=0; i<colors.length; i++) {
-          html.push('<div class="pixel" style="background-color:' + colors[i] 
-            + ';" data-color="' + colors[i] + '"></div>');
-        }
-        $pixels.html(html.join(''));
-
-        $('#pixels .pixel').css('width', cell.width*scale);
-        $('#pixels .pixel').css('height', cell.height*scale);
-
-        $('.pixel').hover(function() {
-          $(this).css('-webkit-transition','none');
-          $(this).css('background-color','#888');
-        }, function() {
-          var color = $(this).data('color');
-          $(this).css('-webkit-transition','background-color 5s ease-out');
-          $(this).css('background-color', color);
-        });
-      };
-      img.src = e.target.result;
+  reader.onload = function(e) {
+    img.onload = function(){ 
+      html = generate(process(img));
+      fn && fn(html);
     };
-  })(file);
-
-  reader.onerror = function(e) {
-    console.log(e);
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
-});
+}
 
-function pixelate(canvas, ctx, rows, cols, cell) {
+function process(img) {
+  var cols, rows
+    , width = img.width
+    , height = img.height
+    , ratio
+    , colors
+    , lim = 400;
+
+  if (width>=height) {
+    ratio = width/lim;
+    img.width = lim;
+    img.height = height/ratio;
+  } else {
+    ratio = height/lim;
+    img.width = width/ratio;
+    img.height = lim;
+  }
+
+  c.width = img.width;
+  c.height = img.height;
+
+  ctx.clearRect(0, 0, c.width, c.height);
+  ctx.drawImage(img, 0, 0, img.width, img.height);
+
+  cols = Math.round(c.width/cell.width);
+  rows = Math.round(c.height/cell.height);
+
+  return { 
+    width: cols*cell.width*scale+1
+  , height: rows*cell.height*scale+1
+  , pixel: { width: cell.width*scale, height: cell.height*scale }
+  , colors: pixelate(rows, cols, cell) };
+}
+
+
+function pixelate(rows, cols, cell) {
   var shift = Array.prototype.shift
     , rgba, red, green, blue, alpha
     , colors = []
@@ -97,4 +78,46 @@ function pixelate(canvas, ctx, rows, cols, cell) {
     }
   }
  return colors; 
+}
+
+
+function generate(config) {
+  var html = []
+    , colors = config.colors
+    , pixel = config.pixel
+    , width = config.width
+    , height = config.height;
+  
+  for (var i=0; i<colors.length; i++) {
+    html.push('<div class="pixel" style="'
+      + 'background-color:' + colors[i] 
+      + '; width: '+ pixel.width + 'px'
+      + '; height: '+ pixel.height + 'px'
+      + ';" data-color="' + colors[i] 
+      + '"></div>');
+  }
+
+  html = '<div id="pixels" style="'
+  + 'width: ' + width + 'px; height: '+ height + 'px;">'
+  +  html.join('') 
+  + '</div>';
+ return html;
+}
+
+
+$('#file-upload').change(function(e) {
+  var file = e.target.files[0]; 
+  readFile(file, render);
+});
+
+function render(html) {
+  $('#result').html(html);
+  $('#pixels .pixel').hover(function() {
+    $(this).css('-webkit-transition','none');
+    $(this).css('background-color','#888');
+  }, function() {
+    var color = $(this).data('color');
+    $(this).css('-webkit-transition','background-color 5s ease-out');
+    $(this).css('background-color', color);
+  });
 }
