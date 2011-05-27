@@ -57,7 +57,7 @@
 
   exports.dabbleback.defaults = {
     cell: {width: 10, height: 10}
-  , scale: 4
+  , scale: 3
   };
 
   /**
@@ -75,15 +75,18 @@
       , lim = 400
       , cell = dabbleback.defaults.cell
       , scale = dabbleback.defaults.scale;
-
+    
+    //todo: refactor this...duplicate code!
     if (width>=height) {
+      lim = width > lim ? lim : width;
       ratio = width/lim;
       img.width = lim;
       img.height = height/ratio;
     } else {
+      lim = height > lim ? lim : height;
       ratio = height/lim;
-      img.width = width/ratio;
       img.height = lim;
+      img.width = width/ratio;
     }
 
     c.width = img.width;
