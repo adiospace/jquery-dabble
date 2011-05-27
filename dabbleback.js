@@ -67,27 +67,24 @@
    */
 
   var process = function (img) {
-    var cols, rows
-      , width = img.width
-      , height = img.height
+    var cell = dabbleback.defaults.cell
+      , scale = dabbleback.defaults.scale
+      , cols, rows
+      , lim = 400
       , ratio
       , colors
-      , lim = 400
-      , cell = dabbleback.defaults.cell
-      , scale = dabbleback.defaults.scale;
+      , big = img.width
+      , small = img.height;
     
-    //todo: refactor this...duplicate code!
-    if (width>=height) {
-      lim = width > lim ? lim : width;
-      ratio = width/lim;
-      img.width = lim;
-      img.height = height/ratio;
-    } else {
-      lim = height > lim ? lim : height;
-      ratio = height/lim;
-      img.height = lim;
-      img.width = width/ratio;
+    if (img.height > img.width) {
+      big = img.height;
+      small = img.width;
     }
+
+    lim = big > lim ? lim : big;
+    ratio = big/lim;
+    img.width = lim;
+    img.height = small/ratio;
 
     c.width = img.width;
     c.height = img.height;
@@ -99,9 +96,9 @@
     rows = Math.round(c.height/cell.height);
 
     return { 
-      width: cols*cell.width*scale+1
+      pixel: { width: cell.width*scale, height: cell.height*scale }
+    , width: cols*cell.width*scale+1
     , height: rows*cell.height*scale+1
-    , pixel: { width: cell.width*scale, height: cell.height*scale }
     , colors: pixelate(rows, cols, cell) };
   };
 
