@@ -73,18 +73,18 @@
       , lim = 400
       , ratio
       , colors
-      , big = img.width
-      , small = img.height;
+      , big = 'width'
+      , small = 'height';
     
     if (img.height > img.width) {
-      big = img.height;
-      small = img.width;
+      big = 'height';
+      small = 'width';
     }
 
-    lim = big > lim ? lim : big;
-    ratio = big/lim;
-    img.width = lim;
-    img.height = small/ratio;
+    lim = img[big] > lim ? lim : img[big];
+    ratio = img[big]/lim;
+    img[big] = lim;
+    img[small] = img[small]/ratio;
 
     c.width = img.width;
     c.height = img.height;
