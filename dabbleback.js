@@ -27,9 +27,9 @@
     // only process image files.
     if (!file.type.match('image.*')) return;
 
-    var reader = new FileReader()
-    , img = document.createElement('img')
-    , html;
+    var html
+      , reader = new FileReader()
+      , img = document.createElement('img');
 
     reader.onload = function(e) {
       img.onload = function(){ 
@@ -56,8 +56,8 @@
    */
 
   exports.dabbleback.defaults = {
-    cell: {width: 10, height: 10}
-  , scale: 3
+      cell: {width: 20, height: 20}
+    , scale: 1.5
   };
 
   /**
@@ -96,10 +96,11 @@
     rows = Math.round(c.height/cell.height);
 
     return { 
-      pixel: { width: cell.width*scale, height: cell.height*scale }
-    , width: cols*cell.width*scale+1
-    , height: rows*cell.height*scale+1
-    , colors: pixelate(rows, cols, cell) };
+        pixel: { width: cell.width*scale, height: cell.height*scale }
+      , width: cols*cell.width*scale+1
+      , height: rows*cell.height*scale+1
+      , colors: pixelate(rows, cols, cell) 
+    };
   };
 
   /**

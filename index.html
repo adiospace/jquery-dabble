@@ -40,18 +40,24 @@
     function render(html) {
       $('#result').html(html);
       $('#pixels .pixel').hover(function() {
-        $(this).css('-webkit-transition','none');
-        $(this).css("-moz-transition","none");
-        $(this).css("-o-transition","none");
-        $(this).css("transition","none");   
-        $(this).css('background-color','#888');
+        $(this).css({
+            '-webkit-transition': 'none'
+          , '-moz-transition': 'none'
+          , '-o-transition': 'none'
+          , 'transition': 'none'
+          , 'background-color': '#888'
+      });
       }, function() {
-        var color = $(this).data('color');
-        $(this).css("-webkit-transition","background-color 5s ease-out");
-        $(this).css("-moz-transition","background-color 5s ease-out");
-        $(this).css("-o-transition","background-color 5s ease-out");
-        $(this).css("transition","background-color 5s ease-out");   
-        $(this).css('background-color', color);
+        var $el = $(this)
+          , color = $el.data('color');
+
+        $el.css({
+            '-webkit-transition': 'background-color 5s ease-out'
+          , '-moz-transition': 'background-color 5s ease-out'
+          , '-o-transition': 'background-color 5s ease-out'
+          , 'transition': 'background-color 5s ease-out'
+          , 'background-color': color
+        });
       });
     }
   </script>
