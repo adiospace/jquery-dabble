@@ -6,8 +6,8 @@
 
 (function($){
 
-  var canvas = document.createElement('canvas'),
-    ctx = canvas.getContext('2d');
+  var canvas = document.createElement('canvas')
+    , ctx = canvas.getContext('2d');
 
 
   $.dabble = function(el, options) {
@@ -23,7 +23,7 @@
     constructor: $.dabble,
 
     init: function() {
-      return this.generate(this.process());
+      //return this.generate(this.process());
     },
 
     generate: function(config) {
@@ -31,10 +31,11 @@
         , pixel = config.pixel
         , width = config.width
         , height = config.height
-        , html = [];
+        , html = []
+        , l = colors.length;
       
-      for (var i=0; i<colors.length; i++) {
-        html.push('<div class="pixel" style="'
+      for (var i=0; i<l; i++) {
+        html.push('<div class="dabble-pixel" style="'
           + 'background-color:' + colors[i] 
           + '; width: '+ pixel.width + 'px'
           + '; height: '+ pixel.height + 'px'
@@ -42,11 +43,10 @@
           + '"></div>');
       }
 
-      html = '<div id="pixels" style="'
+      return '<div class="dabble" style="'
         + 'width: ' + width + 'px; height: '+ height + 'px;">'
         +  html.join('') 
         + '</div>';
-      return html;
     },
 
     process: function() {
@@ -55,7 +55,8 @@
         , scale = this.options.scale
         , lim = 400
         , big = 'width'
-        , small = 'height';
+        , small = 'height'
+        , img = this.el[0];
     
       if (img.height > img.width) {
         big = 'height';
@@ -67,27 +68,25 @@
       img[big] = lim;
       img[small] = img[small]/ratio;
 
-      c.width = img.width;
-      c.height = img.height;
+      canvas.width = img.width;
+      canvas.height = img.height;
 
-      ctx.clearRect(0, 0, c.width, c.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0, img.width, img.height);
 
-      cols = Math.round(c.width/cell.width);
-      rows = Math.round(c.height/cell.height);
+      cols = Math.round(canvas.width/cell.width);
+      rows = Math.round(canvas.height/cell.height);
 
       return { 
           pixel: { width: cell.width*scale, height: cell.height*scale }
         , width: cols*cell.width*scale+1
         , height: rows*cell.height*scale+1
-        , colors: pixelate(rows, cols, cell) 
+        , colors: this.pixelate(rows, cols, cell) 
       };
     },
 
     pixelate: function(rows, cols, cell) {
-      var rgba, red, green, blue, alpha
-        , row, col
-        , x, y
+      var rgba, red, green, blue, alpha, row, col, x, y
         , shift = Array.prototype.shift
         , colors = [];
 
@@ -137,8 +136,10 @@
   };
 
   $.fn.dabble = function(options) {
-    return this.each(function() {
-      new $.dabble(this, options);
-    });
+    //return this.each(function() {
+      var d = new $.dabble(this, options);
+      var pixels = d.generate(d.process());
+      $('img').replaceWith(pixels);
+    //});
   };
 })(jQuery);
