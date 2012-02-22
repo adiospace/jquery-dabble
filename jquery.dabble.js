@@ -9,13 +9,17 @@
   var canvas = document.createElement('canvas')
     , ctx = canvas.getContext('2d');
 
-
   $.dabble = function(el, options) {
-    this.el = el;
-    this.$el = $(el);
-    this.options = $.extend({}, $.dabble.defaults, options);
-  };
+    this.$el = el;
+    this.el = el[0];
 
+    if (!this.$el.is('img')) return;
+
+    this.options = $.extend({}, $.dabble.defaults, options);
+
+    var pixels = this.generate(this.process());
+    this.$el.replaceWith(pixels);
+  };
 
   $.dabble.VERSION = '0.1.0';
 
@@ -56,7 +60,7 @@
         , lim = 400
         , big = 'width'
         , small = 'height'
-        , img = this.el[0];
+        , img = this.el;
     
       if (img.height > img.width) {
         big = 'height';
@@ -136,10 +140,14 @@
   };
 
   $.fn.dabble = function(options) {
-    //return this.each(function() {
-      var d = new $.dabble(this, options);
-      var pixels = d.generate(d.process());
-      $('img').replaceWith(pixels);
-    //});
+    return this.each(function() {
+      var $el = $(this)
+        , el = document.createElement('img');
+      if (!$el.is('img')) return;
+      el.src = $el.attr('src');
+      $(el).load(function() {
+        new $.dabble($el, options);
+      });
+    });
   };
 })(jQuery);
