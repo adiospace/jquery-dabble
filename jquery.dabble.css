@@ -1,13 +1,9 @@
-.dabble {
-  margin: 0 auto;
-}
-
 .dabble .dabble-pixel {
   display: block;
   float: left;
   -webkit-box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
-  -webkit-box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
   -moz-box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+  -o-box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
   box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.2);
 
   -webkit-transition: background-color 5s ease;

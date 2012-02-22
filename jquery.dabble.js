@@ -12,13 +12,11 @@
   $.dabble = function(el, options) {
     this.$el = el;
     this.el = el[0];
-
     if (!this.$el.is('img')) return;
-
     this.options = $.extend({}, $.dabble.defaults, options);
-
     var pixels = this.generate(this.process());
     this.$el.replaceWith(pixels);
+    this.render();
   };
 
   $.dabble.VERSION = '0.1.0';
@@ -26,17 +24,13 @@
   $.dabble.prototype = {
     constructor: $.dabble,
 
-    init: function() {
-      //return this.generate(this.process());
-    },
-
     generate: function(config) {
       var colors = config.colors
         , pixel = config.pixel
         , width = config.width
         , height = config.height
-        , html = []
-        , l = colors.length;
+        , l = colors.length
+        , html = [];
       
       for (var i=0; i<l; i++) {
         html.push('<div class="dabble-pixel" style="'
@@ -57,7 +51,7 @@
       var cols, rows, ratio, colors
         , cell = this.options.cell
         , scale = this.options.scale
-        , lim = 400
+        , lim = this.options.maxWidth
         , big = 'width'
         , small = 'height'
         , img = this.el;
@@ -109,9 +103,8 @@
       return colors; 
     },
 
-    render: function(html) {
-      $('#result').html(html);
-      $('#pixels .pixel').hover(function() {
+    render: function() {
+      $('.dabble .dabble-pixel').hover(function() {
         $(this).css({
             '-webkit-transition': 'none'
           , '-moz-transition':    'none'
@@ -122,7 +115,6 @@
       }, function() {
         var $el = $(this)
           , color = $el.data('color');
-
         $el.css({
             '-webkit-transition': 'background-color 5s ease-out'
           , '-moz-transition':    'background-color 5s ease-out'
@@ -135,8 +127,9 @@
   };
 
   $.dabble.defaults = {
-    cell: {width: 20, height: 20},
-    scale: 1.5
+    cell: {width: 40, height: 40},
+    scale: 1,
+    maxWidth: 800
   };
 
   $.fn.dabble = function(options) {
