@@ -8,15 +8,15 @@ __This is a _proof of concept_. Don't use it in production__.
 
 ## Usage
   
-  $('#some_img').dabble();
+    $('#some_img').dabble();
 
 
 Customize the defaults:
 
-  $.dabble.defaults = {
-    cell: {width: 40, height: 40},
-    scale: 1,
-    maxWidth: 800
-  };
+    $.dabble.defaults = {
+      cell: {width: 40, height: 40},
+      scale: 1,
+      maxWidth: 800
+    };
 
   
