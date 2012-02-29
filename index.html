@@ -5,7 +5,17 @@
   <title>Dabble</title>
   <link rel="stylesheet" href="jquery.dabble.css" type="text/css" media="screen" />
   <style>
-    body { width: 800px; margin: 20px auto; }
+    body { 
+      width: 800px; 
+      margin: 20px auto; 
+      font: 14px/1.4 "Helvetica Neue", "Lucida Grande", "Arial";
+      background: #fff url(bg.png);
+    }
+
+    p {
+      font-style: italic;
+    }
+
     #dabble { 
       display: block; 
       padding: 10px; 
@@ -15,13 +25,28 @@
       background: #ee4511; 
       text-align: center;
     }
+
+    #ribbon {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 2;
+    }
   </style>
 </head>
 <body>
   <h1>Dabble</h1>
+  <p><b>Dabble</b> takes an image and transforms it into a grid of divs. As you hover your mouse over the grid a trail effect is applied. 
+Inspired by <a href="http://dabble.in">Dabble.in</a>.</p>
+
+  <h2>Example</h2>
   
+  <a id="dabble" href="#">Click me to dabble the image</a>
   <img src="tf2.jpg" alt="Team Fortress 2 Rocks!" id="tf2"/>
-  <a id="dabble" href="#">Dabble</a>
+
+  <a href="http://github.com/adrianolaru/jquery-dabble"> 
+      <img alt="Fork me on GitHub" id="ribbon" src="http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"> 
+  </a>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script src="jquery.dabble.js"></script>
