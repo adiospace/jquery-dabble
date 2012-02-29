@@ -4,18 +4,32 @@
   <meta charset="utf-8">
   <title>Dabble</title>
   <link rel="stylesheet" href="jquery.dabble.css" type="text/css" media="screen" />
+  <style>
+    body { width: 800px; margin: 20px auto; }
+    #dabble { 
+      display: block; 
+      padding: 10px; 
+      margin: 20px 0;
+      color: #fff; 
+      text-decoration: none; 
+      background: #ee4511; 
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
+  <h1>Dabble</h1>
+  
   <img src="tf2.jpg" alt="Team Fortress 2 Rocks!" id="tf2"/>
+  <a id="dabble" href="#">Dabble</a>
 
-  <a id="dabble" href="#">Dabble it</a>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script src="jquery.dabble.js"></script>
   <script>
-  	$('#dabble').click(function(e) {
-  		e.preventDefault();
-    	$('img').dabble();
-  	});
+    $('#dabble').click(function(e) {
+      e.preventDefault();
+      $('img').dabble();
+    });
   </script>
 </body>
 </html>
