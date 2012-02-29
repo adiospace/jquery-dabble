@@ -1,5 +1,7 @@
-#jQuery Dabble Plugin
+# Dabble
 
-As I was surfing the net, I've stumble upon http://dabble.in which uses a background full of colorful divs, and as you hover your mouse over them, a CSS transition is applied to leave a grey mark over the divs which fades away after 5 sec or so.
+_Dabble_ takes an image and transforms it into a grid of divs. As you hover your mouse over the grid a trail effect is applied. 
+Inspired from [Dabble.in](http://dabble.in).
 
-This is a generator that builds such backgrounds. It takes a photo, read it with the File API, draw it on a HTML5 canvas and take the colors out of it. Then, it generates the actual HTML with colorful divs.
+## Important
+This is a __proof of concept__. Don't use it in production. 
