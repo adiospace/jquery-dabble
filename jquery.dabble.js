@@ -12,7 +12,6 @@
   $.dabble = function(el, options) {
     this.$el = el;
     this.el = el[0];
-    if (!this.$el.is('img')) return;
     this.options = $.extend({}, $.dabble.defaults, options);
     var pixels = this.generate(this.process());
     this.$el.replaceWith(pixels);
@@ -134,11 +133,10 @@
 
   $.fn.dabble = function(options) {
     return this.each(function() {
-      var $el = $(this)
-        , el = document.createElement('img');
+      var $el = $(this), img = document.createElement('img');
       if (!$el.is('img')) return;
-      el.src = $el.attr('src');
-      $(el).load(function() {
+      img.src = $el.attr('src');
+      $(img).load(function() {
         new $.dabble($el, options);
       });
     });
